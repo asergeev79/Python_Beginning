@@ -13,10 +13,8 @@
 import random
 
 size = int(input("Введите размер массива: "))
-list_n = []
 
-for i in range(size):
-    list_n.append(random.randint(1, 100))
+list_n = [random.randint(1, 100) for i in range(size)]
 
 print("Заданный массив:")
 print(list_n)
