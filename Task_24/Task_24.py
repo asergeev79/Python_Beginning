@@ -25,10 +25,9 @@ with open('Task_24.txt', "r") as f:
 #print(list_n)
 print(list_m)
 list_sum3 = []
-list_sum3.append(list_m[len(list_m) - 1] + list_m[0] + list_m[1])
-for i in range(1, len(list_m) - 1):
+for i in range(len(list_m) - 1):
     list_sum3.append(list_m[i - 1] + list_m[i] + list_m[i + 1])
-list_sum3.append(list_m[len(list_m) - 2] + list_m[len(list_m) - 1] + list_m[0])
+list_sum3.append(list_m[-2] + list_m[-1] + list_m[0])
 
 #print(list_sum3)
 print(f"Максимальное число ягод за один раз - {max(list_sum3)}")
