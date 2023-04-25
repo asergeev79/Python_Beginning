@@ -11,7 +11,7 @@
 """
 
 def sum_recursion(x, y):
-    if x == 0 & y == 0:
+    if x == 0 and y == 0:
         return 0
     if x > y:
         return 1 + sum_recursion(x - 1, y)
