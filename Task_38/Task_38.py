@@ -1,38 +1,66 @@
 # import os
 
-def show_menu() -> int:
+def show_menu(menu: list) -> int:
     print()
-    print("1. Вывод всего справочника")
-    print("2. Поиск номера телефона по фамилии абонента")
-    print("3. Поиск абонента по номеру телефона")
-    print("4. Добавить запись в справочник")
-    print("5. Сохранить справочник в файл")
-    print("6. Закончить работу")
-    print("Выберите необходимое действие:")
+    for i in range(len(menu)):
+        print(F"{i + 1} {menu[i]}")
+    print("Выберите пункт меню:")
     return int(input())
 
 def read_csv(filename: str) -> list:
     data = []
-    fields = ["Фамилия", "Имя", "Телефон", "Описание"]
     with open(filename, 'r', encoding='utf-8') as fin:
         for line in fin:
-            record = dict(zip(fields, line.strip().split(',')))
-            data.append(record)
+            data.append(line.strip().split(','))
+    
+    fields = data[0]
+    data = list(map(lambda rec: dict(zip(fields, rec)), data))
+#    data[0] = fields
     return data
 
-def find_number(pb: list, name: str) -> int:
-    records = list(filter(lambda rec: rec, pb))
+def find_record(pb: list, field: str, name: str) -> list:
+    return list(filter(lambda item: item[field].upper() == name.upper(), pb))
+
+def new_record() -> dict:
+    fields = ["Фамилия", "Имя", "Телефон", "Описание"]
+    record = dict()
+    print('Введите фаимлию абонента')
+    record[fields[0]] = input()
+    print('Введите имя абонента')
+    record[fields[1]] = input()
+    print('Введите телефон абонента')
+    record[fields[2]] = input()
+    print('Введите описание абонента')
+    record[fields[3]] = input()
+    return record
 
 def print_phone_book(pb: list):
     fields = ["Фамилия", "Имя", "Телефон", "Описание"]
-    
+
+main_menu = ["Вывод всего справочника",
+             "Поиск в справочнике",
+             "Добавить запись в справочник",
+             "Сохранить справочник в файл",
+             "Закончить работу"
+]
 phone_book = read_csv('phon.txt')
-while True:
-    choice = show_menu()
-    match choice:
-        case 1:
-            print(phone_book)
-        case 6:
-            break
-        case _:
-            continue
+if phone_book != []:
+    while True:
+        choice = show_menu(main_menu)
+        match choice:
+            case 1:
+                print(phone_book)
+            case 2:
+                print("Поиск по полю справочника:")
+                choice = show_menu(phone_book[0])
+                print("Введите строку посика")
+                surname = input()
+                print(find_record(phone_book, phone_book[0][choice], surname))
+            case 3:
+                phone_book.append(new_record())
+            case 6:
+                break
+            case _:
+                continue
+else:
+    print("Файл справочника должен сожержать описание полей")
