@@ -30,11 +30,20 @@ def new_record(rec_fields: list) -> dict:
         record[field] = input()
     return record
 
-def print_phone_book(pb: list, field_pb: list):
-    for num, pb_record in enumerate(pb, start=1):
-        print(f"\n{num}:")
-        for desc,item in pb_record.items():
-            print(f"{desc}: {item}")
+def del_record(pb: list, pos: int):
+    pb.pop(pos)
+
+def print_phone_book(pb: list, field_pb: list, view='brief'):
+    if view == "brief":
+        print(" ".join(field_pb))
+        print("=======================")
+        for num,item in enumerate(pb,start=1):
+            print(num," ".join(list(item.values())))
+    else:
+        for num, pb_record in enumerate(pb, start=1):
+            print(f"\n{num}:")
+            for desc,item in pb_record.items():
+                print(f"{desc}: {item}")
 
 # функция записи справочника в файл
 def save_phone_book(pb: list, filename: str):
@@ -56,22 +65,24 @@ if phone_book != []:
         choice = show_menu(main_menu)
         match choice:
             case 1:
-                print_phone_book(phone_book, fields)
+                print("Вывод справочника:")
+                choice = show_menu(["краткий","полный"])
+                print_phone_book(phone_book, fields) if choice == 1 else print_phone_book(phone_book, fields,'full')
             case 2:
                 print("Поиск по полю справочника:")
                 choice = show_menu(fields)
                 print("Введите строку поиска")
                 search_string = input()
-                print(find_record(phone_book, fields[choice - 1], search_string))
+                print_phone_book(find_record(phone_book, fields[choice - 1], search_string), fields)
             case 3:
                 phone_book.append(new_record(fields))
             case 4:
                 print_phone_book(phone_book, fields)
                 print("Введите номер записи для удаления")
-                choice = int(input())
-                phone_book.pop(choice - 1)
+                del_record(phone_book, int(input()) - 1)
                 print_phone_book(phone_book, fields)
             case 5:
+                print_phone_book(phone_book, fields)
                 print("Введите номер записи для изменения:")
                 choice = int(input())
                 choice_list = []
