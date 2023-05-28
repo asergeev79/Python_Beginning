@@ -1,4 +1,3 @@
-#from tabulate import tabulate
 
 # функция вывода меню с нумерацией пунктов
 def show_menu(menu: list) -> int:
